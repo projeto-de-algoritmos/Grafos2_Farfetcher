@@ -21,9 +21,10 @@ export function Tile({ tile, isInteractive, changeType }) {
                 setMode(tile.type);
             }}
             disabled={!isInteractive}
-            className="bg-slate-400 h-10 w-10 flex items-center justify-center"
+            className="bg-slate-400 h-10 w-10 flex items-center justify-center relative"
         >
             {tileVariants[mode].img}
+            {tile.position}
         </button>
     )
 }
