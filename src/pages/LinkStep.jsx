@@ -9,7 +9,7 @@ import {
     Stack,
     Tooltip
 } from '@mui/material'
-import { getRandomInt } from '../utils/randNames';
+import { getRandomInt } from '../utils/randNames.js';
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
 
