@@ -1,33 +1,97 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Map } from "../components/Map";
+import { Graph } from '../utils/graph';
 
 export function MainPage() {
-    const [interactEnabled, setInteractEnabled] = useState(false);
+    const [tiles, setTiles] = useState([]);
     const [walkableTiles, setWalkableTiles] = useState([]);
+    const [interactEnabled, setInteractEnabled] = useState(false);
     const [startingTile, setStartingTile] = useState();
     const [endTile, setEndTile] = useState();
     const [errorMessage, setErrorMessage] = useState("");
 
-    const tiles = []
-    for (var i = 1; i <= 100; i++) {
-        tiles.push(
-            {
-                position: i,
-                type: 'floor'
-            }
-        );
+    const handleLinkTiles = (graph) => {
+        walkableTiles.map(tile => {
+            walkableTiles
+                .filter(other => {
+                    if (Math.abs(tile.position - other.position) == 1) return other;
+                    else if (Math.abs(tile.position - other.position) == 10) return other;
+                })
+                .map(neighbor => {
+                    if (!graph.AdjList.get(tile).find(element => element == neighbor))
+                        graph.addEdge(tile, neighbor);
+                })
+        })
     }
 
+    const handleSearch = () => {
+        const graph = new Graph();
+
+        walkableTiles.map(tile => graph.addVertex(tile));
+
+        walkableTiles.map(tile => {
+            walkableTiles
+                .filter(other => {
+                    if (Math.abs(tile.position - other.position) == 1) return other;
+                    else if (Math.abs(tile.position - other.position) == 10) return other;
+                })
+                .map(neighbor => {
+                    if (!graph.AdjList.get(tile).find(element => element == neighbor))
+                        graph.addEdge(tile, neighbor);
+                })
+        })
+
+        console.log(graph.AdjList);
+
+        // setSearchList(graph.bfs(firstIndividual, secondIndividual));
+    }
+
+    const buildMap = () => {
+        let newTiles = [];
+        for (var i = 1; i <= 100; i++) {
+            newTiles.push(
+                {
+                    position: i,
+                    type: 'floor'
+                }
+            );
+        }
+
+        setTiles([...newTiles]);
+    }
+
+    useEffect(() => {
+        buildMap();
+    }, []);
+
     const changeTileType = (position) => {
-        const currentType = tiles.find(tile => tile.position == position).type;
+        let newTiles = tiles;
+
+        const currentType = newTiles.find(tile => tile.position == position).type;
         let newType = "";
 
         if (currentType == 'tree') newType = 'sticks';
         else if (currentType == 'floor') newType = 'tree';
         else newType = 'floor';
 
-        tiles.find(tile => tile.position == position).type = newType;
+        newTiles.find(tile => tile.position == position).type = newType;
+        setTiles([...newTiles]);
     }
+
+    const changeMap = () => {
+        let newWalkables = [];
+
+        tiles.map((tile) => {
+            if (tile.type != 'tree') newWalkables.push(tile);
+        })
+
+        setWalkableTiles([...newWalkables]);
+        console.log(walkableTiles)
+    }
+
+    useEffect(() => {
+        changeMap();
+    }, [interactEnabled]);
 
 
     return (
@@ -77,7 +141,7 @@ export function MainPage() {
             </p>
 
             <button
-                onClick={() => { }}
+                onClick={handleSearch}
                 disabled={walkableTiles.length && startingTile && endTile}
             >
                 Calcular caminho
