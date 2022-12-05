@@ -24,7 +24,10 @@ export function Tile({ tile, isInteractive, changeType }) {
             className="bg-slate-400 h-10 w-10 flex items-center justify-center relative"
         >
             {tileVariants[mode].img}
-            {tile.position}
+
+            <div className="absolute text-xs bottom-0 right-0">
+                {tile.position}
+            </div>
         </button>
     )
 }
