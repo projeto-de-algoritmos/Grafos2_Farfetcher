@@ -9,6 +9,9 @@
 | 18/0041592  |  Denys Rógeres |
 | 19/0109963  |  João Victor Batista |
 
+## Video
+A apresentação do vídeo encontra-se na raiz do projeto
+
 
 ## Sobre
 No projeto dessa entrega decidimos realizar dois trabalhos. O primeiro **Handshake 2.0** trata-se da evolução do projeto da entrega passada que tinha o intuito de implementar a ideia do *Kevin Bacon Number*, mas agora, com a implementação do Dijikstra é possível implementar a ideia completa e realmente encontrar o menor caminho para conectar duas pessoas. <br>
