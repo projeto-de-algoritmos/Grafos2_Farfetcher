@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SwipeRightIcon from '@mui/icons-material/SwipeRight';
-// import Graph from '../utils/graph';
+import Graph from '../utils/graph';
 import {
     Box,
     TextField,
@@ -22,23 +22,23 @@ export function SearchStep({
     const [buttonEnabled, setButtonEnabled] = useState(true);
     const [notConnected, setNotConnected] = useState(false)
 
-    // function handleBFS() {
-    //     const graph = new Graph();
+    function handleDijkstra() {
+        const graph = new Graph();
 
-    //     for (var i = 0; i < individuals.length; i++) {
-    //         graph.addVertex(individuals[i]);
-    //     }
+        for (var i = 0; i < individuals.length; i++) {
+            graph.addVertex(individuals[i]);
+        }
 
-    //     for (var i = 0; i < connectionsList.length; i++) {
-    //         graph.addEdge(connectionsList[i].firstIndividual, connectionsList[i].secondIndividual);
-    //     }
-
-    //     setSearchList(graph.bfs(firstIndividual, secondIndividual));
-    // }
+        for (var i = 0; i < connectionsList.length; i++) {
+            graph.addEdge(connectionsList[i].firstIndividual, connectionsList[i].secondIndividual, 1);
+        }
+        
+        setSearchList(graph.Dijkstra(firstIndividual, secondIndividual));
+    }
 
     useEffect(() => {
         if (firstIndividual && secondIndividual) {
-            if (searchList[searchList.length - 1] != secondIndividual) setNotConnected(true)
+            if (searchList.length == 1) setNotConnected(true)
             else setNotConnected(false)
         }
     }, [searchList])
@@ -105,7 +105,7 @@ export function SearchStep({
                 <Grid item xs={2}>
                     <Button
                         variant="contained"
-                        // onClick={handleBFS}
+                        onClick={handleDijkstra}
                         sx={{ height: '3.5rem', width: '100%' }}
                         disabled={buttonEnabled}
                     >
