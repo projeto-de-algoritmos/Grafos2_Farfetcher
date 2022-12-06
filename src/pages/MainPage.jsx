@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Map } from "../components/Map";
-import { Graph } from '../utils/graph';
+import { WeightedGraph } from '../utils/graph';
 import bg_tile from '../assets/bg_tile.png'
 
 export function MainPage() {
     const [tiles, setTiles] = useState([]);
     const [walkableTiles, setWalkableTiles] = useState([]);
     const [interactEnabled, setInteractEnabled] = useState(false);
-    const [startingTile, setStartingTile] = useState();
-    const [endTile, setEndTile] = useState();
+    const [startPosition, setStartPosition] = useState();
+    const [endPosition, setEndPosition] = useState();
     const [errorMessage, setErrorMessage] = useState("");
 
     const handleLinkTiles = (graph) => {
@@ -19,20 +19,23 @@ export function MainPage() {
                     else if (Math.abs(tile.position - other.position) == 10) return other;
                 })
                 .map(neighbor => {
-                    if (!graph.AdjList.get(tile).find(element => element == neighbor))
-                        graph.addEdge(tile, neighbor);
+                    if (!graph.adjList[tile.position].find(element => element.node == neighbor.position))
+                        graph.addEdge(tile.position, neighbor.position, 1);
                 })
         })
     }
 
     const handleSearch = () => {
-        const graph = new Graph();
+        const graph = new WeightedGraph();
 
-        walkableTiles.map(tile => graph.addVertex(tile));
+        walkableTiles.map(tile => graph.addVertex(tile.position));
 
         handleLinkTiles(graph);
 
-        console.log(graph.AdjList);
+        const result = graph.dijkstraSearch(parseInt(startPosition), parseInt(endPosition));
+        // console.log(graph.adjList)
+        // console.log(startPosition, endPosition)
+        console.log(result);
 
         // setSearchList(graph.bfs(firstIndividual, secondIndividual));
     }
@@ -49,6 +52,7 @@ export function MainPage() {
         }
 
         setTiles([...newTiles]);
+        setWalkableTiles([...newTiles]);
     }
 
     useEffect(() => {
@@ -79,6 +83,30 @@ export function MainPage() {
         setWalkableTiles([...newWalkables]);
     }
 
+    const handleSetStartPosition = (position) => {
+        if (interactEnabled) setErrorMessage("*Termine seu mapa antes de selecionar as posições!");
+        else if (!walkableTiles.find(tile => tile.position == parseInt(position)))
+            setErrorMessage("*Posição inicial inválida! Escolha uma posição nos quadrados de chão");
+        else if (endPosition && endPosition == position)
+            setErrorMessage("*A posição inicial não pode ser a mesma da final!");
+        else {
+            setStartPosition(position);
+            setErrorMessage("");
+        }
+    }
+
+    const handleSetEndPosition = (position) => {
+        if (interactEnabled) setErrorMessage("*Termine seu mapa antes de selecionar as posições!");
+        else if (!walkableTiles.find(tile => tile.position == parseInt(position)))
+            setErrorMessage("*Posição final inválida! Escolha uma posição nos quadrados de chão");
+        else if (startPosition && startPosition == position)
+            setErrorMessage("*A posição final não pode ser a mesma da inicial!");
+        else {
+            setEndPosition(position);
+            setErrorMessage("");
+        }
+    }
+
     useEffect(() => {
         changeMap();
     }, [interactEnabled]);
@@ -93,18 +121,20 @@ export function MainPage() {
                 <h1 className="text-center text-lg font-bold text-lime-100">
                     Bem vindo ao Farfetcher!!!
                 </h1>
-                <h2 className="w-full md:w-2/3 text-lime-100">
+                <h2 className="w-full md:w-2/3 text-lime-100 text-center">
                     Monte o mapa de acordo com a puzzle que você quer resolver. Troque o tipo dos qudrados clicando neles
                 </h2>
             </div>
 
-            <div className="flex flex-col items-center justify-center gap-6 mt-6 px-6">
+            <div className="lg:w-[500px] flex flex-col items-center justify-center gap-6 mt-6 px-6">
 
                 <div className="h-96 md:h-[525px] flex items-center justify-center">
                     <Map
                         interactEnabled={interactEnabled}
                         tiles={tiles}
                         changeTileType={changeTileType}
+                        startPosition={startPosition}
+                        endPosition={endPosition}
                     />
                 </div>
 
@@ -116,6 +146,12 @@ export function MainPage() {
                     {interactEnabled ? 'Finalizar mapa' : 'Alterar mapa'}
                 </button>
 
+                {errorMessage &&
+                    <p className="w-full text-left text-red-500">
+                        {errorMessage}
+                    </p>
+                }
+
                 <div className="w-full flex flex-col gap-2">
                     <div className="w-full flex gap-2 justify-start items-center">
                         <p className="text-left">
@@ -123,7 +159,8 @@ export function MainPage() {
                         </p>
                         <input
                             className="bg-green-100 bg-opacity-50 text-end outline-none w-16"
-                            value={startingTile}
+                            onChange={(e) => handleSetStartPosition(e.target.value)}
+                            value={startPosition}
                             type="number"
                             min={1}
                             max={100}
@@ -136,7 +173,8 @@ export function MainPage() {
                         </p>
                         <input
                             className="bg-green-100 bg-opacity-50 text-end outline-none w-16"
-                            value={endTile}
+                            onChange={(e) => handleSetEndPosition(e.target.value)}
+                            value={endPosition}
                             type="number"
                             min={1}
                             max={100}
@@ -144,17 +182,9 @@ export function MainPage() {
                     </div>
                 </div>
 
-
-
-                {errorMessage &&
-                    <p className="text-left">
-                        {errorMessage}
-                    </p>
-                }
-
                 <button
                     onClick={handleSearch}
-                    disabled={walkableTiles.length && startingTile && endTile}
+                    // disabled={walkableTiles.length && startPosition && endPosition}
                     className="bg-zinc-900 text-lime-100 py-2 px-4 rounded-full"
                 >
                     Calcular caminho

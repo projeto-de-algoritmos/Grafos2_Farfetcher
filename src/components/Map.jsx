@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { Tile } from "./Tile";
 
-export function Map({ tiles, changeTileType, interactEnabled }) {
+export function Map({
+    tiles,
+    changeTileType,
+    interactEnabled,
+    startPosition,
+    endPosition
+}) {
 
 
     return (
@@ -13,6 +19,8 @@ export function Map({ tiles, changeTileType, interactEnabled }) {
                         tile={tile}
                         isInteractive={interactEnabled}
                         changeType={changeTileType}
+                        isStartTile={tile.position == parseInt(startPosition)}
+                        isEndTile={tile.position == parseInt(endPosition)}
                     />
                 ))
             }
