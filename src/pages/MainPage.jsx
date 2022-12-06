@@ -10,15 +10,15 @@ export function MainPage() {
     const [startPosition, setStartPosition] = useState();
     const [endPosition, setEndPosition] = useState();
     const [errorMessage, setErrorMessage] = useState("");
-    const [ path, setPath] = useState([]);
+    const [path, setPath] = useState([]);
 
     const handleLinkTiles = (graph) => {
         walkableTiles.map(tile => {
             walkableTiles
                 .filter(other => {
                     if (Math.abs(tile.position - other.position) == 1) {
-                        if(tile.position % 10 != 0 && other.position % 10 != 0) return other;
-                        else if(tile.position % 10 == 0 && other.position < tile.position) return other;
+                        if (tile.position % 10 != 0 && other.position % 10 != 0) return other;
+                        else if (tile.position % 10 == 0 && other.position < tile.position) return other;
                     }
                     else if (Math.abs(tile.position - other.position) == 10) return other;
                 })
@@ -86,34 +86,38 @@ export function MainPage() {
 
     const handleSetStartPosition = (position) => {
         if (interactEnabled) setErrorMessage("*Termine seu mapa antes de selecionar as posições!");
-
-        const posTile = tiles.find(tile => tile.position == parseInt(position));
-
-        if (posTile.type == 'tree')
-            setErrorMessage("*Posição inicial inválida! Escolha uma posição nos quadrados de chão");
-        else if (endPosition && endPosition == position)
-            setErrorMessage("*A posição inicial não pode ser a mesma da final!");
         else {
-            setStartPosition(position);
-            setErrorMessage("");
-            setPath([]);
+            const posTile = tiles.find(tile => tile.position == parseInt(position));
+
+            if (posTile.type == 'tree')
+                setErrorMessage("*Posição inicial inválida! Escolha uma posição nos quadrados de chão");
+            else if (endPosition && endPosition == position)
+                setErrorMessage("*A posição inicial não pode ser a mesma da final!");
+            else {
+                setStartPosition(position);
+                setErrorMessage("");
+                setPath([]);
+            }
         }
+
     }
 
     const handleSetEndPosition = (position) => {
         if (interactEnabled) setErrorMessage("*Termine seu mapa antes de selecionar as posições!");
-
-        const posTile = tiles.find(tile => tile.position == parseInt(position));
-
-        if (posTile.type == 'tree')
-            setErrorMessage("*Posição final inválida! Escolha uma posição nos quadrados de chão");
-        else if (startPosition && startPosition == position)
-            setErrorMessage("*A posição final não pode ser a mesma da inicial!");
         else {
-            setEndPosition(position);
-            setErrorMessage("");
-            setPath([]);
+            const posTile = tiles.find(tile => tile.position == parseInt(position));
+
+            if (posTile.type == 'tree')
+                setErrorMessage("*Posição final inválida! Escolha uma posição nos quadrados de chão");
+            else if (startPosition && startPosition == position)
+                setErrorMessage("*A posição final não pode ser a mesma da inicial!");
+            else {
+                setEndPosition(position);
+                setErrorMessage("");
+                setPath([]);
+            }
         }
+
     }
 
     useEffect(() => {
