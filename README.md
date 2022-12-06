@@ -46,3 +46,8 @@ ou
 ```
 $ yarn dev
 ```
+
+## Screenshots
+
+![image](https://user-images.githubusercontent.com/54676096/205797796-f2ce4032-b179-46c1-a352-545af3c81328.png)
+
