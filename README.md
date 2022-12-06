@@ -16,7 +16,7 @@ No projeto dessa entrega decidimos realizar dois trabalhos. O primeiro **Handsha
 O projeto Farfetcher se inspirou em uma das mecânicas mais famosas da franquia Pokémon: a puzzle do Farfetch'd! Nela o jogador deveria procurar pelo pokémon perdido em uma floresta, capturá-lo e devolvê-lo ao seu dono. Baseando-se nessa ideia, o projeto busca trazer um simulador onde o usuário monta um mapa de uma floresta, seleciona as posições do jogador e do Farfetch'd, e através de algoritmos de busca, mostra o menor caminho até o pokémon. O nome do projeto veio de *'Farfetch'd'* (nome do pokémon) + *'fetcher'* (buscador).
 
 ## Branchs
-O projeto encontra-se nas duas branchs: handshake-2.0 e farfetcher e o guia e instalação e comando pode ser encontrado no read.me dos respectivos projetos.
+O projeto encontra-se nas duas branchs: **handshake-2.0** e **farfetcher** e o guia e instalação e comando pode ser encontrado no read.me dos respectivos projetos.
 
 ### Handshake
 
