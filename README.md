@@ -49,14 +49,16 @@ Dessa forma, o objetivo do projeto é implementar a ideia do kevin bacon number 
 - *npm* ou *yarn*
 - node v16
 
-<br/>
-
 ### Instalação
 Para instalar o projeto, bastar seguir os seguintes comandos:
 ```
-$ git clone https://github.com/projeto-de-algoritmos/Grafos2_Farfetcher/tree/handshake-2.0
+$ git clone https://github.com/projeto-de-algoritmos/Grafos2_Farfetcher_Handshake.git
 ```
-Em seguida é preciso entrar no projeto e digitar o comando:
+Em seguida é preciso mudar para a branch a branch handshake-2.0 utilizando o seguinte comando:
+```
+$ git checkout handshake-2.0
+```
+E instalar o projeto com o comando:
 ```
 $ npm install
 ```
@@ -65,7 +67,6 @@ Para inicializar o projeto digite o comando:
 ```
 $ npm run dev
 ```
-
 ou 
 
 ```
