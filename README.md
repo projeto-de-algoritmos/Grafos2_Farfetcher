@@ -25,7 +25,7 @@ O projeto Farfetcher se inspirou em uma das mecânicas mais famosas da franquia 
 ### Instalação
 Para instalar o projeto, bastar seguir os seguintes comandos:
 ```
-$ git clone https://github.com/projeto-de-algoritmos/Grafos2_Farfetcher/tree/handshake-2.0
+$ git clone https://github.com/projeto-de-algoritmos/Grafos2_Farfetcher/tree/farfetcher
 ```
 Em seguida é preciso entrar no projeto e digitar o comando:
 ```
