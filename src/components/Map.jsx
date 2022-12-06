@@ -6,7 +6,8 @@ export function Map({
     changeTileType,
     interactEnabled,
     startPosition,
-    endPosition
+    endPosition,
+    path
 }) {
 
 
@@ -21,6 +22,7 @@ export function Map({
                         changeType={changeTileType}
                         isStartTile={tile.position == parseInt(startPosition)}
                         isEndTile={tile.position == parseInt(endPosition)}
+                        inPath={path.find(element => parseInt(element) == tile.position)}
                     />
                 ))
             }

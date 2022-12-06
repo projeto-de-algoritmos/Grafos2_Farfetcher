@@ -10,12 +10,16 @@ export function MainPage() {
     const [startPosition, setStartPosition] = useState();
     const [endPosition, setEndPosition] = useState();
     const [errorMessage, setErrorMessage] = useState("");
+    const [ path, setPath] = useState([]);
 
     const handleLinkTiles = (graph) => {
         walkableTiles.map(tile => {
             walkableTiles
                 .filter(other => {
-                    if (Math.abs(tile.position - other.position) == 1) return other;
+                    if (Math.abs(tile.position - other.position) == 1) {
+                        if(tile.position % 10 != 0 && other.position % 10 != 0) return other;
+                        else if(tile.position % 10 == 0 && other.position < tile.position) return other;
+                    }
                     else if (Math.abs(tile.position - other.position) == 10) return other;
                 })
                 .map(neighbor => {
@@ -33,11 +37,8 @@ export function MainPage() {
         handleLinkTiles(graph);
 
         const result = graph.dijkstraSearch(parseInt(startPosition), parseInt(endPosition));
-        // console.log(graph.adjList)
-        // console.log(startPosition, endPosition)
         console.log(result);
-
-        // setSearchList(graph.bfs(firstIndividual, secondIndividual));
+        setPath(result);
     }
 
     const buildMap = () => {
@@ -85,25 +86,33 @@ export function MainPage() {
 
     const handleSetStartPosition = (position) => {
         if (interactEnabled) setErrorMessage("*Termine seu mapa antes de selecionar as posições!");
-        else if (!walkableTiles.find(tile => tile.position == parseInt(position)))
+
+        const posTile = tiles.find(tile => tile.position == parseInt(position));
+
+        if (posTile.type == 'tree')
             setErrorMessage("*Posição inicial inválida! Escolha uma posição nos quadrados de chão");
         else if (endPosition && endPosition == position)
             setErrorMessage("*A posição inicial não pode ser a mesma da final!");
         else {
             setStartPosition(position);
             setErrorMessage("");
+            setPath([]);
         }
     }
 
     const handleSetEndPosition = (position) => {
         if (interactEnabled) setErrorMessage("*Termine seu mapa antes de selecionar as posições!");
-        else if (!walkableTiles.find(tile => tile.position == parseInt(position)))
+
+        const posTile = tiles.find(tile => tile.position == parseInt(position));
+
+        if (posTile.type == 'tree')
             setErrorMessage("*Posição final inválida! Escolha uma posição nos quadrados de chão");
         else if (startPosition && startPosition == position)
             setErrorMessage("*A posição final não pode ser a mesma da inicial!");
         else {
             setEndPosition(position);
             setErrorMessage("");
+            setPath([]);
         }
     }
 
@@ -135,12 +144,16 @@ export function MainPage() {
                         changeTileType={changeTileType}
                         startPosition={startPosition}
                         endPosition={endPosition}
+                        path={path}
                     />
                 </div>
 
 
                 <button
-                    onClick={() => setInteractEnabled(!interactEnabled)}
+                    onClick={() => {
+                        setInteractEnabled(!interactEnabled);
+                        setPath([]);
+                    }}
                     className="bg-zinc-900 text-lime-100 py-2 px-4 rounded-full"
                 >
                     {interactEnabled ? 'Finalizar mapa' : 'Alterar mapa'}

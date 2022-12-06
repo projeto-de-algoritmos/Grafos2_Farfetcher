@@ -4,6 +4,7 @@ import sticks_tile from '../assets/sticks_tile.png';
 import tree_tile from '../assets/tree_tile.png';
 import player from '../assets/player.png';
 import farfetch_d from '../assets/farfetch_d.png';
+import pokeball from '../assets/pokeball.png';
 
 
 export function Tile({
@@ -11,7 +12,8 @@ export function Tile({
     isInteractive,
     changeType,
     isStartTile,
-    isEndTile
+    isEndTile,
+    inPath
 }) {
     const tileVariants = {
         "floor": {
@@ -57,6 +59,15 @@ export function Tile({
                     className="absolute bottom-4 w-[80%] h-[80%]"
                 />
             }
+
+            {inPath &&
+                <img
+                    src={pokeball}
+                    alt="pokeball"
+                    className="absolute bottom-4 w-1/3 h-1/3"
+                />
+            }
+
 
             <div className={`absolute font-medium text-xs bottom-0 right-1 ${tile.type == 'tree' ? 'text-white' : ''}`}>
                 {tile.position}
